@@ -1,5 +1,6 @@
 package com.jjh.board.member.entity;
 
+import com.jjh.board.member.dto.MemberDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,16 +23,16 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 전략
     private Long id;
 
-    @Column(nullable = false, length = 50, updatable = false)
+    @Column(nullable = false, length = 50, updatable = false,unique = true)
     private String loginId;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "birthDate", updatable = false)
+    @Column(updatable = false)
     private LocalDateTime birthDate;
 
     @Column(nullable = false)
@@ -43,6 +44,17 @@ public class Member {
 
     public void addRole(MemberRole memberRole) {
         memberRoleList.add(memberRole);
+    }
+
+    public MemberDTO toDTO() {
+        return MemberDTO.builder()
+                .id(this.id)
+                .loginId(this.loginId)
+                .name(this.name)
+                .birthDate(this.birthDate)
+                .email(this.email)
+                .roles(this.memberRoleList.stream().map(Enum::name).toList()) // Enum을 문자열로 변환
+                .build();
     }
 
 }
