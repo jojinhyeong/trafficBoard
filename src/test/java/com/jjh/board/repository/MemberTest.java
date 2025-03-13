@@ -61,8 +61,9 @@ public class MemberTest {
     @Test
     @DisplayName("loginId로 Member와 Roles 조회 테스트")
     void findByLoginIdWithRolesTest() {
-        String loginId = "user10";
+        String loginId = "user1";
 
+        String passwor= "1111";
         Member member = memberRepository.findByLoginIdWithRoles(loginId);
 
         assertNotNull(member, "회원이 존재하지 않습니다!");

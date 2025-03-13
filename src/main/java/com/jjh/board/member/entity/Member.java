@@ -38,7 +38,7 @@ public class Member {
     @Column(nullable = false)
     private String email;
 
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<MemberRole> memberRoleList = new ArrayList<>();
 
@@ -50,6 +50,7 @@ public class Member {
         return MemberDTO.builder()
                 .id(this.id)
                 .loginId(this.loginId)
+                //.password(this.password)
                 .name(this.name)
                 .birthDate(this.birthDate)
                 .email(this.email)

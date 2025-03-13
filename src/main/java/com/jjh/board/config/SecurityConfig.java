@@ -1,12 +1,9 @@
-/*
 package com.jjh.board.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,16 +30,19 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/css/**", "/js/**").permitAll() // 로그인 및 정적 리소스 허용
-                        .requestMatchers("/main").authenticated() // 메인 페이지는 인증 필요
                         .anyRequest().authenticated() // 나머지 요청은 인증 필요
                 )
                 .formLogin(form -> form
-                        .loginPage("/login") // 커스텀 로그인 페이지 설정
+                        .loginPage("/login")
+                        .usernameParameter("username") // 로그인 폼의 username 필드 매핑
+                        .passwordParameter("password") // 로그인 폼의 password 필드 매핑
                         .defaultSuccessUrl("/main", true) // 로그인 성공 시 이동할 URL
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/login?logout") // 로그아웃 성공 시 이동할 URL
+                        .logoutSuccessUrl("/login") // 로그아웃 성공 시 이동할 URL
+                        .invalidateHttpSession(true) // 세션 무효화
+                        .deleteCookies("JSESSIONID") // 쿠키 삭제
                         .permitAll()
                 );
 
@@ -72,4 +72,4 @@ public class SecurityConfig {
     }
 
 }
-*/
+
